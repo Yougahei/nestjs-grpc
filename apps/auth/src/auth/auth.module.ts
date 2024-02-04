@@ -11,10 +11,10 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { PasswordService } from './password.service';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [
-    UsersModule,
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
@@ -29,8 +29,16 @@ import { PasswordService } from './password.service';
       },
       inject: [ConfigService],
     }),
+    UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard, PasswordService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    JwtAuthGuard,
+    PasswordService,
+    UsersService,
+  ],
+  exports: [JwtAuthGuard],
 })
 export class AuthModule {}

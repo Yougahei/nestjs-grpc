@@ -4,17 +4,15 @@ import {
   CreateUserDto,
   SecurityConfig,
   Token,
+  User,
   ValidateResponse,
 } from '@app/common';
 import {
   BadRequestException,
   ConflictException,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ClientGrpc } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
 import { UsersService } from '../users/users.service';
 import { PasswordService } from './password.service';
 import { JwtService } from '@nestjs/jwt';
@@ -28,17 +26,9 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
-  private authSvc: AuthServiceClient;
 
-  @Inject(AUTH_SERVICE_NAME)
-  private readonly client: ClientGrpc;
-
-  public onModuleInit(): void {
-    this.authSvc = this.client.getService<AuthServiceClient>(AUTH_SERVICE_NAME);
-  }
-
-  public async validate(token: string): Promise<ValidateResponse> {
-    return firstValueFrom(this.authSvc.validate({ token }));
+  async validateUser(userId: string): Promise<User> {
+    return this.usersService.findOne(userId);
   }
 
   async createUser(createUserDto: CreateUserDto) {
