@@ -1,9 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AuthModule } from './auth.module';
+import { AuthModule } from './auth/auth.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import { join } from 'path';
 import { AUTH_PACKAGE_NAME } from '@app/common';
+import { HttpExceptionFilter } from '@app/common/filter/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -16,6 +17,7 @@ async function bootstrap() {
       },
     },
   );
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.listen();
 }
 bootstrap();

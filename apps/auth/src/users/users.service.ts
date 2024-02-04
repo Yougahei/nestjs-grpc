@@ -14,7 +14,7 @@ import { Observable, Subject } from 'rxjs';
 export class UsersService {
   private readonly users: User[] = [];
 
-  create(createUserDto: CreateUserDto) {
+  createUser(createUserDto: CreateUserDto) {
     const user: User = {
       ...createUserDto,
       subscribed: false,

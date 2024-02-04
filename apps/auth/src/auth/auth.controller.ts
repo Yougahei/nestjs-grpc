@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   AuthServiceController,
+  AuthServiceControllerMethods,
   CreateUserDto,
   LoginRequest,
   UserServiceControllerMethods,
@@ -11,7 +12,7 @@ import {
 import { Observable } from 'rxjs';
 
 @Controller()
-@UserServiceControllerMethods()
+@AuthServiceControllerMethods()
 export class AuthController implements AuthServiceController {
   constructor(private readonly authService: AuthService) {}
 

@@ -1,18 +1,21 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
-import { AuthService } from './auth/auth.service';
-import { JwtStrategy } from './auth/jwt.strategy';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { PasswordService } from './auth/password.service';
+
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SecurityConfig } from '@app/common';
-import { AuthController } from './auth/auth.controller';
+import config from '@app/common/configs/config';
+import { UsersModule } from '../users/users.module';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { JwtStrategy } from './jwt.strategy';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { PasswordService } from './password.service';
 
 @Module({
   imports: [
     UsersModule,
+    ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {

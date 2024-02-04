@@ -24,7 +24,7 @@ export class UsersController implements UserServiceController {
   }
 
   createUser(createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.createUser(createUserDto);
   }
 
   findAllUsers() {
